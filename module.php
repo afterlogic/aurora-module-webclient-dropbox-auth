@@ -17,7 +17,7 @@ class DropBoxAuthModule extends AApiModule
 	{
 		$this->incClass('connector');
 		$this->oApiSocialManager = $this->GetManager('social');
-		$this->includeTemplate('BasicAuthClient_LoginView', 'Login-After', 'templates/button.html');
+		$this->includeTemplate('BasicAuthClient_LoginView', 'Login-After', 'templates/Button.html');
 		$this->subscribeEvent('ExternalServicesAction', array($this, 'onExternalServicesAction'));
 	}
 	
