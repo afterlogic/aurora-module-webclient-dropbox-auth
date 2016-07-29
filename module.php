@@ -17,8 +17,18 @@ class DropBoxAuthModule extends AApiModule
 	{
 		$this->incClass('connector');
 		$this->oApiSocialManager = $this->GetManager('social');
-		$this->includeTemplate('BasicAuthClient_LoginView', 'Login-After', 'templates/Button.html');
 		$this->subscribeEvent('ExternalServicesAction', array($this, 'onExternalServicesAction'));
+		$this->subscribeEvent('GetServices', array($this, 'onGetServices'));
+	}
+	
+	/**
+	 * Adds dropbox service name to array passed by reference.
+	 * 
+	 * @param array $aServices Array with services names passed by reference.
+	 */
+	public function onGetServices(&$aServices)
+	{
+		$aServices[] = 'dropbox';
 	}
 	
 	public function onExternalServicesAction($sService, &$mResult)
