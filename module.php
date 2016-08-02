@@ -43,7 +43,19 @@ class DropBoxAuthModule extends AApiModule
 	 */
 	public function onGetServicesSettings(&$aServices)
 	{
-		$aServices[] = array(
+		$aServices[] = $this->GetAppData();
+	}
+	
+	/**
+	 * Returns module settings.
+	 * 
+	 * @param \CUser $oUser
+	 * 
+	 * @return array
+	 */
+	public function GetAppData($oUser = null)
+	{
+		return array(
 			'Name' => $this->sService,
 			'DisplayName' => $this->GetName(),
 			'EnableModule' => $this->getConfig('EnableModule', false),
@@ -61,18 +73,38 @@ class DropBoxAuthModule extends AApiModule
 	 */
 	public function onUpdateServicesSettings($aServices)
 	{
+		$aSettings = $aServices[$this->sService];
+		
+		if (is_array($aSettings))
+		{
+			$this->UpdateSettings($aSettings['EnableModule'], $aSettings['Id'], $aSettings['Secret']);
+		}
+	}
+	
+	/**
+	 * Updates service settings.
+	 * 
+	 * @param boolean $EnableModule
+	 * @param string $Id
+	 * @param string $Secret
+	 * 
+	 * @throws \System\Exceptions\ClientException
+	 */
+	public function UpdateSettings($EnableModule, $Id, $Secret)
+	{
 		try
 		{
-			$aSettings = $aServices[$this->sService];
-			$this->setConfig('EnableModule', $aSettings['EnableModule']);
-			$this->setConfig('Id', $aSettings['Id']);
-			$this->setConfig('Secret', $aSettings['Secret']);
+			$this->setConfig('EnableModule', $EnableModule);
+			$this->setConfig('Id', $Id);
+			$this->setConfig('Secret', $Secret);
 			$this->saveModuleConfig();
 		}
 		catch (Exception $ex)
 		{
 			throw new \System\Exceptions\ClientException(\System\Notifications::CanNotSaveSettings);
 		}
+		
+		return true;
 	}
 	
 	public function onExternalServicesAction($sService, &$mResult)
