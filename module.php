@@ -43,7 +43,12 @@ class DropBoxAuthModule extends AApiModule
 	 */
 	public function onGetServicesSettings(&$aServices)
 	{
-		$aServices[] = $this->GetAppData();
+		$oUser = \CApi::getAuthenticatedUser();
+		$aSettings = $this->GetAppData($oUser);
+		if (!empty($aSettings))
+		{
+			$aServices[] = $aSettings;
+		}
 	}
 	
 	/**
