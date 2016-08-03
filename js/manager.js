@@ -9,7 +9,8 @@ module.exports = function (oAppData, iUserRole, bPublic) {
 		Settings = require('modules/%ModuleName%/js/Settings.js'),
 		oSettings = _.extend({}, oAppData[Settings.ServerModuleName] || {}, oAppData['%ModuleName%'] || {}),
 		
-		bAdminUser = iUserRole === Enums.UserRole.SuperAdmin
+		bAdminUser = iUserRole === Enums.UserRole.SuperAdmin,
+		bPowerUser = iUserRole === Enums.UserRole.PowerUser
 	;
 
 	Settings.init(oSettings);
@@ -20,6 +21,14 @@ module.exports = function (oAppData, iUserRole, bPublic) {
 			{
 				ModulesManager.run('AdminPanelClient', 'registerAdminPanelTab', [
 					function () { return require('modules/%ModuleName%/js/views/AdminSettingsView.js'); },
+					Settings.HashModuleName,
+					TextUtils.i18n('%MODULENAME%/LABEL_SETTINGS_TAB')
+				]);
+			}
+			if (bPowerUser)
+			{
+				ModulesManager.run('SettingsClient', 'registerSettingsTab', [
+					function () { return require('modules/%ModuleName%/js/views/UserSettingsView.js'); },
 					Settings.HashModuleName,
 					TextUtils.i18n('%MODULENAME%/LABEL_SETTINGS_TAB')
 				]);

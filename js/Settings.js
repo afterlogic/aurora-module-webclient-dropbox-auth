@@ -1,16 +1,10 @@
 'use strict';
 
-var
-	Types = require('modules/CoreClient/js/utils/Types.js')
-;
-
 module.exports = {
 	ServerModuleName: 'DropbpxAuth',
 	HashModuleName: 'dropbox-auth',
 	
-	EnableModule: false,
-	Id: '',
-	Secret: '',
+	Connected: false,
 	
 	/**
 	 * Initializes settings from AppData object section of this module.
@@ -21,23 +15,7 @@ module.exports = {
 	{
 		if (oAppDataSection)
 		{
-			this.EnableModule = !!oAppDataSection.EnableModule;
-			this.Id = Types.pString(oAppDataSection.Id);
-			this.Secret = Types.pString(oAppDataSection.Secret);
+			this.Connected = !!oAppDataSection.Connected;
 		}
-	},
-	
-	/**
-	 * Updates settings that is edited by administrator.
-	 * 
-	 * @param {boolean} bEnableModule
-	 * @param {string} sId
-	 * @param {string} sSecret
-	 */
-	updateAdmin: function (bEnableModule, sId, sSecret)
-	{
-		this.EnableModule = bEnableModule;
-		this.Id = sId;
-		this.Secret = sSecret;
 	}
 };

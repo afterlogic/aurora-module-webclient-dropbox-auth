@@ -55,13 +55,25 @@ class DropBoxAuthModule extends AApiModule
 	 */
 	public function GetAppData($oUser = null)
 	{
-		return array(
-			'Name' => $this->sService,
-			'DisplayName' => $this->GetName(),
-			'EnableModule' => $this->getConfig('EnableModule', false),
-			'Id' => $this->getConfig('Id', ''),
-			'Secret' => $this->getConfig('Secret', '')
-		);
+		if ($oUser && $oUser->Role === 0) // Super Admin
+		{
+			return array(
+				'Name' => $this->sService,
+				'DisplayName' => $this->GetName(),
+				'EnableModule' => $this->getConfig('EnableModule', false),
+				'Id' => $this->getConfig('Id', ''),
+				'Secret' => $this->getConfig('Secret', '')
+			);
+		}
+		
+		if ($oUser && $oUser->Role === 1) // Power User
+		{
+			return array(
+				'Connected' => true
+			);
+		}
+		
+		return array();
 	}
 	
 	/**
