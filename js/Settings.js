@@ -5,7 +5,7 @@ var
 ;
 
 module.exports = {
-	ServerModuleName: 'DropBoxAuth',
+	ServerModuleName: 'DropBoxAuthWebclient',
 	HashModuleName: 'dropbox-auth',
 	
 	Connected: false,

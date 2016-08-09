@@ -11,13 +11,13 @@ class DropBoxAuthModule extends AApiModule
 	);
 	
 	protected $aRequireModules = array(
-		'ExternalServices', 'GoogleAuth'
+		'OAuthIntegratorWebclient', 'GoogleAuthWebclient'
 	);
 	
 	public function init() 
 	{
 		$this->incClass('connector');
-		$this->subscribeEvent('ExternalServicesAction', array($this, 'onExternalServicesAction'));
+		$this->subscribeEvent('OAuthIntegratorAction', array($this, 'onOAuthIntegratorAction'));
 		$this->subscribeEvent('GetServices', array($this, 'onGetServices'));
 		$this->subscribeEvent('GetServicesSettings', array($this, 'onGetServicesSettings'));
 		$this->subscribeEvent('UpdateServicesSettings', array($this, 'onUpdateServicesSettings'));
@@ -122,12 +122,12 @@ class DropBoxAuthModule extends AApiModule
 		return true;
 	}
 	
-	public function onExternalServicesAction($sService, &$mResult)
+	public function onOAuthIntegratorAction($sService, &$mResult)
 	{
 		if ($sService === $this->sService)
 		{
 			$mResult = false;
-			$oConnector = new CExternalServicesConnectorDropbox($this);
+			$oConnector = new COAuthIntegratorConnectorDropbox($this);
 			if ($oConnector)
 			{
 				$mResult = $oConnector->Init();

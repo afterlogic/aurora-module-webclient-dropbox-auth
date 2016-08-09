@@ -1,6 +1,6 @@
 <?php
 
-class CExternalServicesConnectorDropbox extends CExternalServicesConnector
+class COAuthIntegratorConnectorDropbox extends COAuthIntegratorConnector
 {
 	public static $ConnectorName = 'dropbox';
 			
@@ -24,10 +24,10 @@ class CExternalServicesConnectorDropbox extends CExternalServicesConnector
 		$oClient->redirect_uri = $sRedirectUrl;
 		$oClient->client_id = $this->oModule->GetConfig('Id');
 		$oClient->client_secret = $this->oModule->GetConfig('Secret');
-		$oExternalServicesModule = \CApi::GetModule('ExternalServices');
-		if ($oExternalServicesModule)
+		$oOAuthIntegratorWebclientModule = \CApi::GetModule('OAuthIntegratorWebclient');
+		if ($oOAuthIntegratorWebclientModule)
 		{
-			$oClient->configuration_file = $oExternalServicesModule->GetPath() .'/classes/OAuthClient/'.$oClient->configuration_file;
+			$oClient->configuration_file = $oOAuthIntegratorWebclientModule->GetPath() .'/classes/OAuthClient/'.$oClient->configuration_file;
 		}
 		
 		return $oClient;
