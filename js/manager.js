@@ -19,7 +19,7 @@ module.exports = function (oAppData, iUserRole, bPublic) {
 		start: function (ModulesManager) {
 			if (bAdminUser)
 			{
-				ModulesManager.run('AdminPanelClient', 'registerAdminPanelTab', [
+				ModulesManager.run('AdminPanelWebclient', 'registerAdminPanelTab', [
 					function () { return require('modules/%ModuleName%/js/views/AdminSettingsView.js'); },
 					Settings.HashModuleName,
 					TextUtils.i18n('%MODULENAME%/LABEL_SETTINGS_TAB')
@@ -27,7 +27,7 @@ module.exports = function (oAppData, iUserRole, bPublic) {
 			}
 			if (bPowerUser)
 			{
-				ModulesManager.run('SettingsClient', 'registerSettingsTab', [
+				ModulesManager.run('SettingsWebclient', 'registerSettingsTab', [
 					function () { return require('modules/%ModuleName%/js/views/UserSettingsView.js'); },
 					Settings.HashModuleName,
 					TextUtils.i18n('%MODULENAME%/LABEL_SETTINGS_TAB')
