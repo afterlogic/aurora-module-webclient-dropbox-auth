@@ -1,6 +1,6 @@
 <?php
 
-class DropBoxModule extends AApiModule
+class DropBoxAuthWebclientModule extends AApiModule
 {
 	protected $sService = 'dropbox';
 	
