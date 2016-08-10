@@ -71,9 +71,16 @@ class DropBoxAuthWebclientModule extends AApiModule
 		
 		if ($oUser && $oUser->Role === 1) // Power User
 		{
+			$oAccount = null;
+			$oOAuthIntegratorWebclientDecorator = \CApi::GetModuleDecorator('OAuthIntegratorWebclient');
+			if ($oOAuthIntegratorWebclientDecorator)
+			{
+				$oAccount = $oOAuthIntegratorWebclientDecorator->GetAccount($this->sService);
+			}
 			return array(
-				'Connected' => true
+				'Connected' => $oAccount ? true : false
 			);
+
 		}
 		
 		return array();
@@ -134,4 +141,16 @@ class DropBoxAuthWebclientModule extends AApiModule
 			}
 		}
 	}
+	
+	public function DeleteAccount()
+	{
+		$bResult = false;
+		$oOAuthIntegratorWebclientDecorator = \CApi::GetModuleDecorator('OAuthIntegratorWebclient');
+		if ($oOAuthIntegratorWebclientDecorator)
+		{
+			$bResult = $oOAuthIntegratorWebclientDecorator->DeleteAccount($this->sService);
+		}		
+		
+		return $bResult;
+	}		
 }
