@@ -58,7 +58,7 @@ class DropBoxAuthWebclientModule extends AApiModule
 	public function GetAppData()
 	{
 		$oUser = \CApi::getAuthenticatedUser();
-		if ($oUser && $oUser->Role === 0) // Super Admin
+		if (!empty($oUser) && $oUser->Role === \EUserRole::SuperAdmin)
 		{
 			return array(
 				'Name' => $this->sService,
@@ -69,7 +69,7 @@ class DropBoxAuthWebclientModule extends AApiModule
 			);
 		}
 		
-		if ($oUser && $oUser->Role === 1) // Power User
+		if (!empty($oUser) && $oUser->Role === \EUserRole::PowerUser)
 		{
 			$oAccount = null;
 			$oOAuthIntegratorWebclientDecorator = \CApi::GetModuleDecorator('OAuthIntegratorWebclient');
