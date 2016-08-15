@@ -11,7 +11,7 @@ class COAuthIntegratorConnectorDropbox extends COAuthIntegratorConnector
 	
 	public function CreateClient()
 	{
-		$sRedirectUrl = rtrim(\MailSo\Base\Http::SingletonInstance()->GetFullUrl(), '\\/ ').'/?external-services='.self::$ConnectorName;
+		$sRedirectUrl = rtrim(\MailSo\Base\Http::SingletonInstance()->GetFullUrl(), '\\/ ').'/?oauth='.self::$ConnectorName;
 		if (!strpos($sRedirectUrl, '://localhost'))
 		{
 			$sRedirectUrl = str_replace('http:', 'https:', $sRedirectUrl);
