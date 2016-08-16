@@ -10,7 +10,7 @@ module.exports = function (oAppData, iUserRole, bPublic) {
 		oSettings = _.extend({}, oAppData[Settings.ServerModuleName] || {}, oAppData['%ModuleName%'] || {}),
 		
 		bAdminUser = iUserRole === Enums.UserRole.SuperAdmin,
-		bPowerUser = iUserRole === Enums.UserRole.PowerUser
+		bPowerUser = iUserRole === Enums.UserRole.NormalUser
 	;
 
 	Settings.init(oSettings);

@@ -69,7 +69,7 @@ class DropBoxAuthWebclientModule extends AApiModule
 			);
 		}
 		
-		if (!empty($oUser) && $oUser->Role === \EUserRole::PowerUser)
+		if (!empty($oUser) && $oUser->Role === \EUserRole::NormalUser)
 		{
 			$oAccount = null;
 			$oOAuthIntegratorWebclientDecorator = \CApi::GetModuleDecorator('OAuthIntegratorWebclient');
