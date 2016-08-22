@@ -91,7 +91,7 @@ class DropBoxAuthWebclientModule extends AApiModule
 	 * 
 	 * @param array $aServices Array with new values for service settings.
 	 * 
-	 * @throws \System\Exceptions\ClientException
+	 * @throws \System\Exceptions\AuroraApiException
 	 */
 	public function onUpdateServicesSettings($aServices)
 	{
@@ -110,7 +110,7 @@ class DropBoxAuthWebclientModule extends AApiModule
 	 * @param string $Id
 	 * @param string $Secret
 	 * 
-	 * @throws \System\Exceptions\ClientException
+	 * @throws \System\Exceptions\AuroraApiException
 	 */
 	public function UpdateSettings($EnableModule, $Id, $Secret)
 	{
@@ -123,7 +123,7 @@ class DropBoxAuthWebclientModule extends AApiModule
 		}
 		catch (Exception $ex)
 		{
-			throw new \System\Exceptions\ClientException(\System\Notifications::CanNotSaveSettings);
+			throw new \System\Exceptions\AuroraApiException(\System\Notifications::CanNotSaveSettings);
 		}
 		
 		return true;
