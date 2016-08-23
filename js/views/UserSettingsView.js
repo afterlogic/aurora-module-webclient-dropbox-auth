@@ -25,7 +25,7 @@ function CUserSettingsView()
 	this.connected = ko.observable(Settings.Connected);
 	this.bRunCallback = false;
 
-	window.dropboxConnectCallback = _.bind(function (bResult, sMessage) {
+	window.dropboxConnectCallback = _.bind(function (bResult, sMessage, sModule) {
 		this.bRunCallback = true;
 		
 		if (!bResult) 
@@ -49,7 +49,7 @@ CUserSettingsView.prototype.connect = function ()
 	$.cookie('oauth-redirect', 'connect');
 	var 
 		self = this,
-		oWin = WindowOpener.open(UrlUtils.getAppPath() + '?oauth=facebook', 'Facebook'),
+		oWin = WindowOpener.open(UrlUtils.getAppPath() + '?oauth=dropbox', 'Dropbox'),
 		intervalID = setInterval(
 			function() { 
 				if (oWin.closed)
