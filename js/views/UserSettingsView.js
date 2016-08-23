@@ -23,7 +23,7 @@ function CUserSettingsView()
 	CAbstractSettingsFormView.call(this, Settings.ServerModuleName);
 	
 	this.connected = ko.observable(Settings.Connected);
-	window.dropboxSettingsViewModelCallback = _.bind(function (bResult, sMessage) {
+	window.dropboxConnectCallback = _.bind(function (bResult, sMessage) {
 		if (!bResult) 
 		{
 			Screens.showError(sMessage);
