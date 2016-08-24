@@ -2,14 +2,17 @@
 
 var
 	_ = require('underscore'),
-	ko = require('knockout'),
 	$ = require('jquery'),
-	Ajax = require('%PathToCoreWebclientModule%/js/Ajax.js'),
-	WindowOpener = require('%PathToCoreWebclientModule%/js/WindowOpener.js'),
-	UrlUtils = require('%PathToCoreWebclientModule%/js/utils/Url.js'),
-	Screens = require('%PathToCoreWebclientModule%/js/Screens.js'),	
+	ko = require('knockout'),
 	
+	Types = require('%PathToCoreWebclientModule%/js/utils/Types.js'),
+	UrlUtils = require('%PathToCoreWebclientModule%/js/utils/Url.js'),
+	
+	Ajax = require('%PathToCoreWebclientModule%/js/Ajax.js'),
+	Api = require('%PathToCoreWebclientModule%/js/Api.js'),
 	ModulesManager = require('%PathToCoreWebclientModule%/js/ModulesManager.js'),
+	WindowOpener = require('%PathToCoreWebclientModule%/js/WindowOpener.js'),
+	
 	CAbstractSettingsFormView = ModulesManager.run('SettingsWebclient', 'getAbstractSettingsFormViewClass'),
 	
 	Settings = require('modules/%ModuleName%/js/Settings.js')
@@ -25,67 +28,63 @@ function CUserSettingsView()
 	this.connected = ko.observable(Settings.Connected);
 	this.bRunCallback = false;
 
-	window.dropboxConnectCallback = _.bind(function (bResult, sMessage, sModule) {
+	window.dropboxConnectCallback = _.bind(function (bResult, sErrorCode, sModule) {
 		this.bRunCallback = true;
 		
-		if (!bResult) 
+		if (!bResult)
 		{
-			Screens.showError(sMessage);
+			Api.showErrorByCode({'ErrorCode': Types.pInt(sErrorCode), 'ErrorMessage': '', 'ErrorModule': sModule}, '', true);
 		}
 		else
 		{
 			this.connected(true);
 		}
-	}, this);				
-
+	}, this);
 }
 
 _.extendOwn(CUserSettingsView.prototype, CAbstractSettingsFormView.prototype);
 
 CUserSettingsView.prototype.ViewTemplate = '%ModuleName%_UserSettingsView';
 
+/**
+ * Tries to connect user to dropbox account.
+ */
 CUserSettingsView.prototype.connect = function ()
 {
 	$.cookie('oauth-redirect', 'connect');
-	var 
-		self = this,
+	var
 		oWin = WindowOpener.open(UrlUtils.getAppPath() + '?oauth=dropbox', 'Dropbox'),
-		intervalID = setInterval(
-			function() { 
-				if (oWin.closed)
+		iIntervalId = setInterval(_.bind(function() {
+			if (oWin.closed)
+			{
+				if (!this.bRunCallback)
 				{
-					if (!self.bRunCallback)
-					{
-						window.location.reload();
-					}
-					else
-					{
-						clearInterval(intervalID);
-					}
+					window.location.reload();
 				}
-			}, 1000
-		)
+				else
+				{
+					clearInterval(iIntervalId);
+				}
+			}
+		}, this), 1000)
 	;
 };
 
+/**
+ * Disconnects user from dropbox account.
+ */
 CUserSettingsView.prototype.disconnect = function ()
 {
-	Ajax.send(
-		Settings.ServerModuleName, 
-		'DeleteAccount', 
-		null, 
-		function (oResponse) {
-			if (oResponse.Result)
-			{
-				this.connected(false);			
-			}
-			else
-			{
-				Screens.showError('error');
-			}
-		}, 
-		this
-	);
+	Ajax.send(Settings.ServerModuleName, 'DeleteAccount', null, function (oResponse) {
+		if (oResponse.Result)
+		{
+			this.connected(false);
+		}
+		else
+		{
+			Api.showErrorByCode(oResponse, '', true);
+		}
+	}, this);
 };
 
 module.exports = new CUserSettingsView();
