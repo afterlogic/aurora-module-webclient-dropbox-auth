@@ -57,6 +57,8 @@ class DropBoxAuthWebclientModule extends AApiModule
 	 */
 	public function GetAppData()
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
+		
 		$oUser = \CApi::getAuthenticatedUser();
 		if (!empty($oUser) && $oUser->Role === \EUserRole::SuperAdmin)
 		{
@@ -114,6 +116,8 @@ class DropBoxAuthWebclientModule extends AApiModule
 	 */
 	public function UpdateSettings($EnableModule, $Id, $Secret)
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::TenantAdmin);
+		
 		try
 		{
 			$this->setConfig('EnableModule', $EnableModule);
@@ -144,6 +148,8 @@ class DropBoxAuthWebclientModule extends AApiModule
 	
 	public function DeleteAccount()
 	{
+		\CApi::checkUserRoleIsAtLeast(\EUserRole::NormalUser);
+		
 		$bResult = false;
 		$oOAuthIntegratorWebclientDecorator = \CApi::GetModuleDecorator('OAuthIntegratorWebclient');
 		if ($oOAuthIntegratorWebclientDecorator)
