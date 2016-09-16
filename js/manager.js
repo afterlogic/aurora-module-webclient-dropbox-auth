@@ -12,7 +12,7 @@ module.exports = function (oAppData) {
 		oSettings = _.extend({}, oAppData[Settings.ServerModuleName] || {}, oAppData['%ModuleName%'] || {}),
 		
 		bAdminUser = App.getUserRole() === Enums.UserRole.SuperAdmin,
-		bPowerUser = App.getUserRole() === Enums.UserRole.NormalUser
+		bNormalUser = App.getUserRole() === Enums.UserRole.NormalUser
 	;
 
 	Settings.init(oSettings);
@@ -30,7 +30,7 @@ module.exports = function (oAppData) {
 		};
 	}
 	
-	if (bPowerUser)
+	if (bNormalUser && Settings.EnableModule)
 	{
 		return {
 			start: function (ModulesManager) {
