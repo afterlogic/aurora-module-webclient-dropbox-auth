@@ -14,6 +14,12 @@ class DropBoxAuthWebclientModule extends AApiModule
 		'OAuthIntegratorWebclient', 'GoogleAuthWebclient'
 	);
 	
+	/***** private functions *****/
+	/**
+	 * Initializes DropBoxAuthWebclient Module.
+	 * 
+	 * @ignore
+	 */
 	public function init() 
 	{
 		$this->incClass('connector');
@@ -23,7 +29,6 @@ class DropBoxAuthWebclientModule extends AApiModule
 		$this->subscribeEvent('UpdateServicesSettings', array($this, 'onUpdateServicesSettings'));
 	}
 	
-	/***** private functions *****/
 	/**
 	 * Passes data to connect to service.
 	 * 
