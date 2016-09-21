@@ -36,7 +36,7 @@ class DropBoxAuthWebclientModule extends AApiModule
 	 * 
 	 * @ignore
 	 */
-	public function init() 
+	public function init()
 	{
 		$this->incClass('connector');
 		$this->subscribeEvent('OAuthIntegratorAction', array($this, 'onOAuthIntegratorAction'));
@@ -194,9 +194,9 @@ class DropBoxAuthWebclientModule extends AApiModule
 		if ($oOAuthIntegratorWebclientDecorator)
 		{
 			$bResult = $oOAuthIntegratorWebclientDecorator->DeleteAccount($this->sService);
-		}		
+		}
 		
 		return $bResult;
-	}		
+	}
 	/***** public functions might be called with web API *****/
 }
