@@ -1,5 +1,9 @@
 <?php
-
+/**
+ *
+ * @package Classes
+ * @subpackage AuthIntegrator
+ */
 class COAuthIntegratorConnectorDropbox extends COAuthIntegratorConnector
 {
 	public static $ConnectorName = 'dropbox';
