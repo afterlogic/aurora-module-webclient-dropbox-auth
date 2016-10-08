@@ -77,17 +77,20 @@ CUserSettingsView.prototype.connect = function ()
  */
 CUserSettingsView.prototype.disconnect = function ()
 {
-	Ajax.send(Settings.ServerModuleName, 'DeleteAccount', null, function (oResponse) {
-		if (oResponse.Result)
-		{
-			this.connected(false);
-			App.broadcastEvent('OAuthAccountChange::after');
-		}
-		else
-		{
-			Api.showErrorByCode(oResponse, '', true);
-		}
-	}, this);
+	if (App.isAccountDeletingAvaliable())
+	{
+		Ajax.send(Settings.ServerModuleName, 'DeleteAccount', null, function (oResponse) {
+			if (oResponse.Result)
+			{
+				this.connected(false);
+				App.broadcastEvent('OAuthAccountChange::after');
+			}
+			else
+			{
+				Api.showErrorByCode(oResponse, '', true);
+			}
+		}, this);
+	}
 };
 
 module.exports = new CUserSettingsView();
