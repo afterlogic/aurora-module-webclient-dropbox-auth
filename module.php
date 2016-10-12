@@ -89,7 +89,7 @@ class DropBoxAuthWebclientModule extends AApiModule
 	 */
 	public function onGetServicesSettings(&$aServices)
 	{
-		$aSettings = $this->GetAppData();
+		$aSettings = $this->GetSettings();
 		if (!empty($aSettings))
 		{
 			$aServices[] = $aSettings;
@@ -121,7 +121,7 @@ class DropBoxAuthWebclientModule extends AApiModule
 	 * 
 	 * @return array
 	 */
-	public function GetAppData()
+	public function GetSettings()
 	{
 		\CApi::checkUserRoleIsAtLeast(\EUserRole::Anonymous);
 		
