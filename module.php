@@ -51,12 +51,12 @@ class DropBoxAuthWebclientModule extends AApiModule
 	 * Passes data to connect to service.
 	 * 
 	 * @ignore
-	 * @param string $sService Service type to verify if data should be passed.
+	 * @param string $aArgs Service type to verify if data should be passed.
 	 * @param boolean|array $mResult variable passed by reference to take the result.
 	 */
-	public function onOAuthIntegratorAction($sService, &$mResult)
+	public function onOAuthIntegratorAction($aArgs, &$mResult)
 	{
-		if ($sService === $this->sService)
+		if ($aArgs['Service'] === $this->sService)
 		{
 			$mResult = false;
 			$oConnector = new COAuthIntegratorConnectorDropbox($this);
