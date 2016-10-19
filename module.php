@@ -77,7 +77,7 @@ class DropBoxAuthWebclientModule extends AApiModule
 	{
 		if ($this->getConfig('EnableModule', false))
 		{
-			$aServices[] = $this->sService;
+//			$aServices[] = $this->sService;
 		}
 	}
 	
