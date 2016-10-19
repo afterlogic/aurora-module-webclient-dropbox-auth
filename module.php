@@ -25,12 +25,19 @@ class DropBoxAuthWebclientModule extends AApiModule
 	protected $aSettingsMap = array(
 		'EnableModule' => array(false, 'bool'),
 		'Id' => array('', 'string'),
-		'Secret' => array('', 'string')
+		'Secret' => array('', 'string'),
+		'Scopes' => array('login', 'string')
 	);
 	
 	protected $aRequireModules = array(
 		'OAuthIntegratorWebclient', 'GoogleAuthWebclient'
 	);
+	
+	protected function issetScope($sScope)
+	{
+		return in_array($sScope, explode(' ', $this->getConfig('Scopes')));
+	}
+
 	
 	/***** private functions *****/
 	/**
@@ -77,8 +84,13 @@ class DropBoxAuthWebclientModule extends AApiModule
 	{
 		if ($this->getConfig('EnableModule', false))
 		{
-//			$aServices[] = $this->sService;
+			if ($this->issetScope('login'))
+			{
+				$aServices[] = $this->sService;
+			}
 		}
+		
+		return true;
 	}
 	
 	/**
