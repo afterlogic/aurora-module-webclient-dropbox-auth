@@ -37,14 +37,12 @@ class COAuthIntegratorConnectorDropbox extends COAuthIntegratorConnector
 		return $oClient;
 	}
 	
-	public function Init()
+	public function Init($sId, $sSecret)
 	{
-		parent::Init();
-
 		$bResult = false;
 		$oUser = null;
 
-		$oClient = self::CreateClient();
+		$oClient = self::CreateClient($sId, $sSecret);
 				
 		if($oClient)
 		{

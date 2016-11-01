@@ -69,7 +69,10 @@ class DropBoxAuthWebclientModule extends AApiModule
 			$oConnector = new COAuthIntegratorConnectorDropbox($this);
 			if ($oConnector)
 			{
-				$mResult = $oConnector->Init();
+				$mResult = $oConnector->Init(
+					\CApi::GetModule('DropBox')->getConfig('Id'), 
+					\CApi::GetModule('DropBox')->getConfig('Secret')
+				);
 			}
 		}
 	}
