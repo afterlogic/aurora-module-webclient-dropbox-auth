@@ -6,16 +6,11 @@
  */
 class COAuthIntegratorConnectorDropbox extends COAuthIntegratorConnector
 {
-	public static $ConnectorName = 'dropbox';
-			
-	public function GetSupportedScopes()
-	{
-		return array('auth', 'filestorage');
-	}
+	protected $Name = 'dropbox';
 	
-	public function CreateClient()
+	public function CreateClient($sId, $sSecret, $sScope)
 	{
-		$sRedirectUrl = rtrim(\MailSo\Base\Http::SingletonInstance()->GetFullUrl(), '\\/ ').'/?oauth='.self::$ConnectorName;
+		$sRedirectUrl = rtrim(\MailSo\Base\Http::SingletonInstance()->GetFullUrl(), '\\/ ').'/?oauth=' . $this->Name;
 		if (!strpos($sRedirectUrl, '://localhost'))
 		{
 			$sRedirectUrl = str_replace('http:', 'https:', $sRedirectUrl);
@@ -26,8 +21,8 @@ class COAuthIntegratorConnectorDropbox extends COAuthIntegratorConnector
 		$oClient->debug_http = self::$Debug;
 		$oClient->server = 'Dropbox2';
 		$oClient->redirect_uri = $sRedirectUrl;
-		$oClient->client_id = $this->oModule->GetConfig('Id');
-		$oClient->client_secret = $this->oModule->GetConfig('Secret');
+		$oClient->client_id = $sId;
+		$oClient->client_secret = $sSecret;
 		$oOAuthIntegratorWebclientModule = \CApi::GetModule('OAuthIntegratorWebclient');
 		if ($oOAuthIntegratorWebclientModule)
 		{
@@ -37,15 +32,15 @@ class COAuthIntegratorConnectorDropbox extends COAuthIntegratorConnector
 		return $oClient;
 	}
 	
-	public function Init($sId, $sSecret)
+	public function Init($sId, $sSecret, $sScope = '')
 	{
-		$bResult = false;
-		$oUser = null;
+		$mResult = false;
 
-		$oClient = self::CreateClient($sId, $sSecret);
+		$oClient = $this->CreateClient($sId, $sSecret, $sScope);
 				
 		if($oClient)
 		{
+			$oUser = null;
 			if(($success = $oClient->Initialize()))
 			{
 				if(($success = $oClient->Process()))
@@ -54,7 +49,13 @@ class COAuthIntegratorConnectorDropbox extends COAuthIntegratorConnector
 					{
 						$success = $oClient->CallAPI(
 							'https://api.dropbox.com/1/account/info', 
-							'GET', array(), array('FailOnAccessError'=>true), $oUser);
+							'GET', 
+							array(), 
+							array(
+								'FailOnAccessError' => true
+							), 
+							$oUser
+						);
 					}
 				}
 				$success = $oClient->Finalize($success);
@@ -62,37 +63,28 @@ class COAuthIntegratorConnectorDropbox extends COAuthIntegratorConnector
 
 			if($oClient->exit)
 			{
-				$bResult = false;
 				exit;
 			}
 
 			if($success && $oUser)
 			{
-				// if you need re-ask user for permission
-				//$oClient->ResetAccessToken();
-
-				$aAccount = array(
-					'type' => self::$ConnectorName,
+				$mResult = array(
+					'type' => $this->Name,
 					'id' => $oUser->uid,
 					'name' => $oUser->display_name,
 					'email' => isset($oUser->email) ? $oUser->email : '',
 					'access_token' => $oClient->access_token,
-					'scopes' => self::$Scopes
+					'scopes' => explode('|', $sScope)
 						
 				);
-
-				\CApi::Log('social_user_' . self::$ConnectorName);
-				\CApi::LogObject($oUser);
-				$bResult = $aAccount;
 			}
 			else
 			{
-				$bResult = false;
+				$mResult = false;
 				$oClient->ResetAccessToken();
-				self::_socialError($oClient->error, self::$ConnectorName);
 			}
 		}
 		
-		return $bResult;
+		return $mResult;
 	}
 }
