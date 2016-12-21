@@ -55,11 +55,14 @@ class DropboxAuthWebclientModule extends AApiModule
 	 */
 	public function onAfterGetServices($aArgs, &$aServices)
 	{
-		if ($this->getConfig('EnableModule', false))
+		$oGoogleModule = \CApi::GetModule('Dropbox'); 
+		
+		if ($oGoogleModule->getConfig('EnableModule', false) &&
+			!empty($oGoogleModule->getConfig('Id', '')) && !empty($oGoogleModule->getConfig('Secret', '')))
 		{
 			$aServices[] = $this->sService;
 		}
-	}
+	}	
 	
 	/**
 	 * Passes data to connect to service.
