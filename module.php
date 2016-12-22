@@ -55,10 +55,10 @@ class DropboxAuthWebclientModule extends AApiModule
 	 */
 	public function onAfterGetServices($aArgs, &$aServices)
 	{
-		$oGoogleModule = \CApi::GetModule('Dropbox'); 
+		$oeModule = \CApi::GetModule('Dropbox'); 
 		
-		if ($oGoogleModule->getConfig('EnableModule', false) &&
-			!empty($oGoogleModule->getConfig('Id', '')) && !empty($oGoogleModule->getConfig('Secret', '')))
+		if ($oeModule->getConfig('EnableModule', false) &&
+			!empty($oeModule->getConfig('Id', '')) && !empty($oeModule->getConfig('Secret', '')))
 		{
 			$aServices[] = $this->sService;
 		}
@@ -81,8 +81,8 @@ class DropboxAuthWebclientModule extends AApiModule
 			if ($oConnector)
 			{
 				$mResult = $oConnector->Init(
-					\CApi::GetModule('DropBox')->getConfig('Id'), 
-					\CApi::GetModule('DropBox')->getConfig('Secret'),
+					\CApi::GetModule('Dropbox')->getConfig('Id'), 
+					\CApi::GetModule('Dropbox')->getConfig('Secret'),
 					$aScopes
 				);
 			}
