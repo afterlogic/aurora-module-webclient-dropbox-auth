@@ -75,7 +75,7 @@ class DropboxAuthWebclientModule extends AApiModule
 	{
 		if ($aArgs['Service'] === $this->sService)
 		{
-			$aScopes = $_COOKIE['oauth-scopes'];
+			$aScopes = isset($_COOKIE['oauth-scopes']) ? $_COOKIE['oauth-scopes'] : '';
 			$mResult = false;
 			$oConnector = new COAuthIntegratorConnectorDropbox($this, $this->sService);
 			if ($oConnector)
