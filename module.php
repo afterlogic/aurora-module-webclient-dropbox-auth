@@ -22,6 +22,10 @@ class DropboxAuthWebclientModule extends AApiModule
 {
 	protected $sService = 'dropbox';
 	
+	protected $aSettingsMap = array(
+		'Scopes' => array('auth', 'string')
+	);
+	
 	protected $aRequireModules = array(
 		'OAuthIntegratorWebclient', 
 		'Dropbox'
@@ -32,7 +36,6 @@ class DropboxAuthWebclientModule extends AApiModule
 		return in_array($sScope, explode(' ', $this->getConfig('Scopes')));
 	}
 
-	
 	/***** private functions *****/
 	/**
 	 * Initializes DropBoxAuthWebclient Module.
@@ -45,6 +48,7 @@ class DropboxAuthWebclientModule extends AApiModule
 		$this->subscribeEvent('OAuthIntegratorWebclient::GetServices::after', array($this, 'onAfterGetServices'));
 		$this->subscribeEvent('OAuthIntegratorAction', array($this, 'onOAuthIntegratorAction'));
 		$this->subscribeEvent('Dropbox::GetSettings', array($this, 'onGetSettings'));
+		$this->subscribeEvent('Dropbox::UpdateSettings::after', array($this, 'onAfterUpdateSettings'));
 	}
 	
 	/**
@@ -55,10 +59,10 @@ class DropboxAuthWebclientModule extends AApiModule
 	 */
 	public function onAfterGetServices($aArgs, &$aServices)
 	{
-		$oeModule = \CApi::GetModule('Dropbox'); 
+		$oModule = \CApi::GetModule('Dropbox'); 
 		
-		if ($oeModule->getConfig('EnableModule', false) &&
-			!empty($oeModule->getConfig('Id', '')) && !empty($oeModule->getConfig('Secret', '')))
+		if ($oModule->getConfig('EnableModule', false) && $this->issetScope('auth') &&
+			!empty($oModule->getConfig('Id', '')) && !empty($oModule->getConfig('Secret', '')))
 		{
 			$aServices[] = $this->sService;
 		}
@@ -100,17 +104,52 @@ class DropboxAuthWebclientModule extends AApiModule
 	 */
 	public function onGetSettings($aArgs, &$mResult)
 	{
-		$iUserId = \CApi::getAuthenticatedUserId();
+		$oUser = \CApi::getAuthenticatedUser();
 		
-		$aScope = array(
-			'Name' => 'auth',
-			'Description' => $this->i18N('SCOPE_AUTH', $iUserId),
-			'Value' => false
-		);
-		if ($aArgs['OAuthAccount'] instanceof \COAuthAccount)
+		if (!empty($oUser))
 		{
-			$aScope['Value'] = $aArgs['OAuthAccount']->issetScope('auth');
+			$aScope = array(
+				'Name' => 'auth',
+				'Description' => $this->i18N('SCOPE_AUTH', $oUser->iId),
+				'Value' => false
+			);
+			if ($oUser->Role === \EUserRole::SuperAdmin)
+			{
+				$aScope['Value'] = $this->issetScope('auth');
+				$mResult['Scopes'][] = $aScope;
+			}
+			if ($oUser->Role === \EUserRole::NormalUser)
+			{
+				if ($aArgs['OAuthAccount'] instanceof \COAuthAccount)
+				{
+					$aScope['Value'] = $aArgs['OAuthAccount']->issetScope('auth');
+				}
+				if ($this->issetScope('auth'))
+				{
+					$mResult['Scopes'][] = $aScope;
+				}
+			}
+		}		
+	}
+	
+	public function onAfterUpdateSettings($aArgs, &$mResult)
+	{
+		$sScope = '';
+		if (isset($aArgs['Scopes']) && is_array($aArgs['Scopes']))
+		{
+			foreach($aArgs['Scopes'] as $aScope)
+			{
+				if ($aScope['Name'] === 'auth')
+				{
+					if ($aScope['Value'])
+					{
+						$sScope = 'auth';
+						break;
+					}
+				}
+			}
 		}
-		$mResult['Scopes'][] = $aScope;
-	}		
+		$this->setConfig('Scopes', $sScope);
+		$this->saveModuleConfig();
+	}
 }
