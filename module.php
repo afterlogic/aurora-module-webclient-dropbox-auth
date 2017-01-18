@@ -22,10 +22,6 @@ class DropboxAuthWebclientModule extends AApiModule
 {
 	protected $sService = 'dropbox';
 	
-	protected $aSettingsMap = array(
-		'Scopes' => array('auth', 'string')
-	);
-	
 	protected $aRequireModules = array(
 		'OAuthIntegratorWebclient', 
 		'Dropbox'
