@@ -106,7 +106,7 @@ class DropboxAuthWebclientModule extends AApiModule
 		{
 			$aScope = array(
 				'Name' => 'auth',
-				'Description' => $this->i18N('SCOPE_AUTH', $oUser->iId),
+				'Description' => $this->i18N('SCOPE_AUTH', $oUser->EntityId),
 				'Value' => false
 			);
 			if ($oUser->Role === \EUserRole::SuperAdmin)
