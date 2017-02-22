@@ -18,7 +18,9 @@
  * @package Modules
  */
 
-class DropboxAuthWebclientModule extends AApiModule
+namespace Aurora\Modules;
+
+class DropboxAuthWebclientModule extends \AApiModule
 {
 	protected $sService = 'dropbox';
 	
@@ -77,7 +79,7 @@ class DropboxAuthWebclientModule extends AApiModule
 		{
 			$aScopes = isset($_COOKIE['oauth-scopes']) ? $_COOKIE['oauth-scopes'] : '';
 			$mResult = false;
-			$oConnector = new COAuthIntegratorConnectorDropbox($this, $this->sService);
+			$oConnector = new \COAuthIntegratorConnectorDropbox($this, $this->sService);
 			if ($oConnector)
 			{
 				$mResult = $oConnector->Init(
