@@ -20,7 +20,7 @@
 
 namespace Aurora\Modules;
 
-class DropboxAuthWebclientModule extends \AApiModule
+class DropboxAuthWebclientModule extends \Aurora\System\AbstractModule
 {
 	protected $sService = 'dropbox';
 	
@@ -57,7 +57,7 @@ class DropboxAuthWebclientModule extends \AApiModule
 	 */
 	public function onAfterGetServices($aArgs, &$aServices)
 	{
-		$oModule = \CApi::GetModule('Dropbox'); 
+		$oModule = \Aurora\System\Api::GetModule('Dropbox'); 
 		
 		if ($oModule->getConfig('EnableModule', false) && $this->issetScope('auth') &&
 			!empty($oModule->getConfig('Id', '')) && !empty($oModule->getConfig('Secret', '')))
@@ -83,8 +83,8 @@ class DropboxAuthWebclientModule extends \AApiModule
 			if ($oConnector)
 			{
 				$mResult = $oConnector->Init(
-					\CApi::GetModule('Dropbox')->getConfig('Id'), 
-					\CApi::GetModule('Dropbox')->getConfig('Secret'),
+					\Aurora\System\Api::GetModule('Dropbox')->getConfig('Id'), 
+					\Aurora\System\Api::GetModule('Dropbox')->getConfig('Secret'),
 					$aScopes
 				);
 			}
@@ -102,7 +102,7 @@ class DropboxAuthWebclientModule extends \AApiModule
 	 */
 	public function onGetSettings($aArgs, &$mResult)
 	{
-		$oUser = \CApi::getAuthenticatedUser();
+		$oUser = \Aurora\System\Api::getAuthenticatedUser();
 		
 		if (!empty($oUser))
 		{

@@ -23,7 +23,7 @@ class COAuthIntegratorConnectorDropbox extends COAuthIntegratorConnector
 		$oClient->redirect_uri = $sRedirectUrl;
 		$oClient->client_id = $sId;
 		$oClient->client_secret = $sSecret;
-		$oOAuthIntegratorWebclientModule = \CApi::GetModule('OAuthIntegratorWebclient');
+		$oOAuthIntegratorWebclientModule = \Aurora\System\Api::GetModule('OAuthIntegratorWebclient');
 		if ($oOAuthIntegratorWebclientModule)
 		{
 			$oClient->configuration_file = $oOAuthIntegratorWebclientModule->GetPath() .'/classes/OAuthClient/'.$oClient->configuration_file;
