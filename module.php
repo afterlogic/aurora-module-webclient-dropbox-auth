@@ -20,7 +20,7 @@
 
 namespace Aurora\Modules;
 
-class DropboxAuthWebclientModule extends \Aurora\System\AbstractModule
+class DropboxAuthWebclientModule extends \Aurora\System\Module\AbstractModule
 {
 	protected $sService = 'dropbox';
 	
