@@ -30,12 +30,12 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 		'Dropbox'
 	);
 	
+	/***** private functions *****/
 	protected function issetScope($sScope)
 	{
 		return in_array($sScope, explode(' ', $this->getConfig('Scopes')));
 	}
-
-	/***** private functions *****/
+	
 	/**
 	 * Initializes DropBoxAuthWebclient Module.
 	 * 
@@ -54,6 +54,7 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 	 * Adds service name to array passed by reference.
 	 * 
 	 * @ignore
+	 * @param array $aArgs
 	 * @param array $aServices Array with services names passed by reference.
 	 */
 	public function onAfterGetServices($aArgs, &$aServices)
@@ -78,18 +79,17 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 	{
 		if ($aArgs['Service'] === $this->sService)
 		{
-			$aScopes = isset($_COOKIE['oauth-scopes']) ? $_COOKIE['oauth-scopes'] : '';
+			$sScopes = isset($_COOKIE['oauth-scopes']) ? $_COOKIE['oauth-scopes'] : '';
 			$mResult = false;
-			$oConnector = new \COAuthIntegratorConnectorDropbox($this, $this->sService);
+			$oConnector = new \COAuthIntegratorConnectorDropbox($this);
 			if ($oConnector)
 			{
 				$mResult = $oConnector->Init(
 					\Aurora\System\Api::GetModule('Dropbox')->getConfig('Id'), 
 					\Aurora\System\Api::GetModule('Dropbox')->getConfig('Secret'),
-					$aScopes
+					$sScopes
 				);
 			}
-			
 			return true;
 		}
 	}
@@ -128,7 +128,7 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 					$mResult['Scopes'][] = $aScope;
 				}
 			}
-		}		
+		}
 	}
 	
 	public function onAfterUpdateSettings($aArgs, &$mResult)
