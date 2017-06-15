@@ -6,6 +6,8 @@
 		"afterlogic/aurora-framework": "~0.4"
 	},
 	"extra": {
-		"installer-name": "DropboxAuthWebclient"
+		"installer-name": "DropboxAuthWebclient",
+		"include-in-mobile": false,
+		"include-in-desktop": true
 	}
 }
