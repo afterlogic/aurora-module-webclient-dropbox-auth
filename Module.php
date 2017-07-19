@@ -51,10 +51,11 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 	 */
 	public function onAfterGetServices($aArgs, &$aServices)
 	{
-		$oModule = \Aurora\System\Api::GetModule('Dropbox'); 
+		$oModule = \Aurora\System\Api::GetModule('Dropbox');
+		$sId = $oModule->getConfig('Id', '');
+		$sSecret = $oModule->getConfig('Secret', '');
 		
-		if ($oModule->getConfig('EnableModule', false) && $this->issetScope('auth') &&
-			!empty($oModule->getConfig('Id', '')) && !empty($oModule->getConfig('Secret', '')))
+		if ($oModule->getConfig('EnableModule', false) && $this->issetScope('auth') && !empty($sId) && !empty($sSecret))	
 		{
 			$aServices[] = $this->sService;
 		}
