@@ -102,7 +102,7 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 		{
 			$aScope = array(
 				'Name' => 'auth',
-				'Description' => $this->i18N('SCOPE_AUTH', $oUser->EntityId),
+				'Description' => $this->i18N('SCOPE_AUTH'),
 				'Value' => false
 			);
 			if ($oUser->Role === \Aurora\System\Enums\UserRole::SuperAdmin)
