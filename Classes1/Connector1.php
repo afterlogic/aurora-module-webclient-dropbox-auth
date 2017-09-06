@@ -8,12 +8,15 @@
  * For full statements of the licenses see LICENSE-AFTERLOGIC and LICENSE-AGPL3 files.
  */
 
+namespace Aurora\Modules\DropboxAuthWebclient\Classes;
+
+
 /**
  *
  * @package Classes
  * @subpackage AuthIntegrator
  */
-class COAuthIntegratorConnectorDropbox extends COAuthIntegratorConnector
+class Connector extends \Aurora\Modules\OAuthIntegratorWebclient\Classes\Connector
 {
 	protected $Name = 'dropbox';
 	

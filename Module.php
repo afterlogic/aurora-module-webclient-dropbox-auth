@@ -74,7 +74,7 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 		{
 			$sScopes = isset($_COOKIE['oauth-scopes']) ? $_COOKIE['oauth-scopes'] : '';
 			$mResult = false;
-			$oConnector = new \COAuthIntegratorConnectorDropbox($this);
+			$oConnector = new Classes\Connector($this);
 			if ($oConnector)
 			{
 				$mResult = $oConnector->Init(
@@ -112,7 +112,7 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 			}
 			if ($oUser->Role === \Aurora\System\Enums\UserRole::NormalUser)
 			{
-				if ($aArgs['OAuthAccount'] instanceof \COAuthAccount)
+				if ($aArgs['OAuthAccount'] instanceof \Aurora\Modules\OAuthIntegratorWebclient\Classes\Account)
 				{
 					$aScope['Value'] = $aArgs['OAuthAccount']->issetScope('auth');
 				}
