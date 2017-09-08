@@ -35,7 +35,6 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 	 */
 	public function init()
 	{
-		$this->incClass('connector');
 		$this->subscribeEvent('OAuthIntegratorWebclient::GetServices::after', array($this, 'onAfterGetServices'));
 		$this->subscribeEvent('OAuthIntegratorAction', array($this, 'onOAuthIntegratorAction'));
 		$this->subscribeEvent('Dropbox::GetSettings', array($this, 'onGetSettings'));
