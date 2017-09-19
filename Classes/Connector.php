@@ -31,14 +31,14 @@ class Connector extends \Aurora\Modules\OAuthIntegratorWebclient\Classes\Connect
 		$oClient = new \oauth_client_class;
 		$oClient->debug = self::$Debug;
 		$oClient->debug_http = self::$Debug;
-		$oClient->server = 'Dropbox2';
+		$oClient->server = 'Dropbox2v2';
 		$oClient->redirect_uri = $sRedirectUrl;
 		$oClient->client_id = $sId;
 		$oClient->client_secret = $sSecret;
 		$oOAuthIntegratorWebclientModule = \Aurora\System\Api::GetModule('OAuthIntegratorWebclient');
 		if ($oOAuthIntegratorWebclientModule)
 		{
-			$oClient->configuration_file = $oOAuthIntegratorWebclientModule->GetPath() .'/classes/OAuthClient/'.$oClient->configuration_file;
+			$oClient->configuration_file = $oOAuthIntegratorWebclientModule->GetPath() .'/Classes/OAuthClient/'.$oClient->configuration_file;
 		}
 		
 		return $oClient;
@@ -60,11 +60,12 @@ class Connector extends \Aurora\Modules\OAuthIntegratorWebclient\Classes\Connect
 					if(\strlen($oClient->access_token))
 					{
 						$success = $oClient->CallAPI(
-							'https://api.dropbox.com/1/account/info', 
-							'GET', 
-							array(), 
+							'https://api.dropbox.com/2/users/get_current_account', 
+							'POST', 
+							null, 
 							array(
-								'FailOnAccessError' => true
+								'FailOnAccessError' => true,
+								'RequestContentType' => 'application/json'
 							), 
 							$oUser
 						);
@@ -82,8 +83,8 @@ class Connector extends \Aurora\Modules\OAuthIntegratorWebclient\Classes\Connect
 			{
 				$mResult = array(
 					'type' => $this->Name,
-					'id' => $oUser->uid,
-					'name' => $oUser->display_name,
+					'id' => $oUser->account_id,
+					'name' => $oUser->name->display_name,
 					'email' => isset($oUser->email) ? $oUser->email : '',
 					'access_token' => $oClient->access_token,
 					'scopes' => \explode('|', $sScope)
