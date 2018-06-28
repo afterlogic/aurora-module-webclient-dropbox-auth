@@ -37,7 +37,7 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 	public function init()
 	{
 		$this->subscribeEvent('OAuthIntegratorWebclient::GetServices::after', array($this, 'onAfterGetServices'));
-		$this->subscribeEvent('OAuthIntegratorAction', array($this, 'onOAuthIntegratorAction'));
+		$this->subscribeEvent('OAuthIntegratorWebclient::OAuthIntegratorAction', array($this, 'onOAuthIntegratorAction'));
 		$this->subscribeEvent('Dropbox::GetSettings', array($this, 'onGetSettings'));
 		$this->subscribeEvent('Dropbox::UpdateSettings::after', array($this, 'onAfterUpdateSettings'));
 	}
@@ -86,7 +86,7 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 					$sScopes
 				);
 			}
-			return true;
+			return false;
 		}
 	}
 	
