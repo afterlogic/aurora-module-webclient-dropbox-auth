@@ -115,7 +115,7 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 				$aScope['Value'] = $this->issetScope('auth');
 				$mResult['Scopes'][] = $aScope;
 			}
-			if ($oUser->Role === \Aurora\System\Enums\UserRole::NormalUser)
+			if ($oUser->isNormalOrTenant())
 			{
 				if ($aArgs['OAuthAccount'] instanceof \Aurora\Modules\OAuthIntegratorWebclient\Classes\Account)
 				{
