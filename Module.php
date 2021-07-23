@@ -117,7 +117,7 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
 			}
 			if ($oUser->isNormalOrTenant())
 			{
-				if ($aArgs['OAuthAccount'] instanceof \Aurora\Modules\OAuthIntegratorWebclient\Classes\Account)
+				if ($aArgs['OAuthAccount'] instanceof \Aurora\Modules\OAuthIntegratorWebclient\Models\OauthAccount)
 				{
 					$aScope['Value'] = $aArgs['OAuthAccount']->issetScope('auth');
 				}
