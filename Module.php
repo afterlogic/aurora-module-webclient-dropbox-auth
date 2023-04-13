@@ -24,6 +24,14 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
         'OAuthIntegratorWebclient',
         'Dropbox'
     );
+    
+    /**
+     * @return Module
+     */
+    public static function Decorator()
+    {
+        return parent::Decorator();
+    }
 
     /***** private functions *****/
     protected function issetScope($sScope)
@@ -99,7 +107,7 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
     {
         $oUser = \Aurora\System\Api::getAuthenticatedUser();
 
-        if (!empty($oUser)) {
+        if ($oUser) {
             $aScope = array(
                 'Name' => 'auth',
                 'Description' => $this->i18N('SCOPE_AUTH'),
