@@ -24,7 +24,7 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
         'OAuthIntegratorWebclient',
         'Dropbox'
     );
-    
+
     /**
      * @return Module
      */
