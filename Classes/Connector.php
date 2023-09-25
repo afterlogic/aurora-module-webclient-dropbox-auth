@@ -27,7 +27,7 @@ class Connector extends \Aurora\Modules\OAuthIntegratorWebclient\Classes\Connect
             );
         }
 
-        $sRedirectUrl = \rtrim(\MailSo\Base\Http::SingletonInstance()->GetFullUrl(), '\\/ ').'/?oauth=' . $this->Name;
+        $sRedirectUrl = \rtrim(\MailSo\Base\Http::SingletonInstance()->GetFullUrl(), '\\/ ') . '/?oauth=' . $this->Name;
         if (!\strpos($sRedirectUrl, '://localhost')) {
             $sRedirectUrl = \str_replace('http:', 'https:', $sRedirectUrl);
         }
@@ -41,7 +41,7 @@ class Connector extends \Aurora\Modules\OAuthIntegratorWebclient\Classes\Connect
         $oClient->client_secret = $sSecret;
         $oOAuthIntegratorWebclientModule = \Aurora\System\Api::GetModule('OAuthIntegratorWebclient');
         if ($oOAuthIntegratorWebclientModule) {
-            $oClient->configuration_file = $oOAuthIntegratorWebclientModule->GetPath() .'/Classes/OAuthClient/'.$oClient->configuration_file;
+            $oClient->configuration_file = $oOAuthIntegratorWebclientModule->GetPath() . '/Classes/OAuthClient/' . $oClient->configuration_file;
         }
 
         return $oClient;
