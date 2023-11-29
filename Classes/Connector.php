@@ -61,10 +61,11 @@ class Connector extends \Aurora\Modules\OAuthIntegratorWebclient\Classes\Connect
                         $success = $oClient->CallAPI(
                             'https://api.dropbox.com/2/users/get_current_account',
                             'POST',
-                            null,
+                            [],
                             array(
                                 'FailOnAccessError' => true,
-                                'RequestContentType' => 'application/json'
+                                'RequestContentType' => 'application/json',
+                                'RequestBody' => "null"
                             ),
                             $oUser
                         );
