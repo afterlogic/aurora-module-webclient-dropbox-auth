@@ -33,8 +33,8 @@ class Connector extends \Aurora\Modules\OAuthIntegratorWebclient\Classes\Connect
         }
 
         $oClient = new \oauth_client_class();
-        $oClient->debug = true;#self::$Debug;
-        $oClient->debug_http = true;#self::$Debug;
+        $oClient->debug = self::$Debug;
+        $oClient->debug_http = self::$Debug;
         $oClient->server = 'Dropbox2v2';
         $oClient->redirect_uri = $sRedirectUrl;
         $oClient->client_id = $sId;
@@ -61,10 +61,11 @@ class Connector extends \Aurora\Modules\OAuthIntegratorWebclient\Classes\Connect
                         $success = $oClient->CallAPI(
                             'https://api.dropbox.com/2/users/get_current_account',
                             'POST',
-                            null,
+                            [],
                             array(
                                 'FailOnAccessError' => true,
-                                'RequestContentType' => 'application/json'
+                                'RequestBody' => '',
+                                'RequestContentType' => ''
                             ),
                             $oUser
                         );
@@ -77,15 +78,29 @@ class Connector extends \Aurora\Modules\OAuthIntegratorWebclient\Classes\Connect
                 exit;
             }
 
+            $oTokenData = new \stdClass();
+            $oTokenData->access_token = $oClient->access_token;
+            $oTokenData->created = time();
+
+            if (!empty($oClient->access_token_expiry)) {
+                $date = new \DateTime($oClient->access_token_expiry);
+                $date->setTimezone(new \DateTimeZone('GMT'));
+
+                $now = new \DateTime();
+                $now->setTimezone(new \DateTimeZone('GMT'));
+
+                $oTokenData->expires_in = $date->getTimestamp() - $now->getTimestamp();
+            }
+
             if ($success && $oUser) {
                 $mResult = array(
                     'type' => $this->Name,
                     'id' => $oUser->account_id,
                     'name' => $oUser->name->display_name,
                     'email' => isset($oUser->email) ? $oUser->email : '',
-                    'access_token' => $oClient->access_token,
+                    'access_token' => \json_encode($oTokenData),
+                    'refresh_token' => $oClient->refresh_token,
                     'scopes' => \explode('|', $sScope)
-
                 );
             } else {
                 $mResult = false;
