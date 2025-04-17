@@ -99,8 +99,8 @@ class Module extends \Aurora\System\Module\AbstractWebclientModule
     */
     public function onAfterGetServiceTypes($aArgs, &$aServices)
     {
-         $oModule = \Aurora\Modules\Dropbox\Module::getInstance();
-         if ($oModule) {
+        $oModule = \Aurora\Modules\Dropbox\Module::getInstance();
+        if ($oModule) {
             $sId = $oModule->oModuleSettings->Id;
             $sSecret = $oModule->oModuleSettings->Secret;
 
